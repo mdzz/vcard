@@ -1,7 +1,9 @@
 package vcard
 
 import (
+	"io/ioutil"
 	"log"
+	"strings"
 )
 
 type VCard struct {
@@ -112,7 +114,17 @@ const ( // Constant define address information index in directory information St
 func getValueFromContentLine(index int, contentLine *ContentLine) ([]string, string) {
 	maxIndex := len(contentLine.Value) - 1
 	if maxIndex >= index {
-		return contentLine.Value[index], contentLine.Value[index].GetText()
+		text := contentLine.Value[index].GetText()
+
+		if strings.ToLower(contentLine.Params["ENCODING"].GetText()) == "quoted-printable" {
+			bytes, err := ioutil.ReadAll(newQuotedPrintableReader(strings.NewReader(text)))
+			if err != nil {
+				return contentLine.Value[index], text
+			}
+			return contentLine.Value[index], string(bytes)
+		} else {
+			return contentLine.Value[index], text
+		}
 	}
 	return nil, ""
 }
