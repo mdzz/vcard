@@ -40,6 +40,8 @@ func (di *DirectoryInfoReader) readGroupName() (group, name string) {
 		} else if c == ';' || c == ':' {
 			name = string(buf)
 			return
+		} else if c == '\n' || c == '\r' {
+			// skip empty line in vcard
 		} else {
 			buf = append(buf, c)
 		}
