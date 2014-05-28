@@ -206,7 +206,7 @@ func (vcard *VCard) ReadFrom(di *DirectoryInfoReader) {
 				if contentLineLength > addressSize {
 					log.Printf("ADR data has more fields: %d\n", contentLineLength)
 				} else if contentLineLength < addressSize {
-					log.Printf("ADR data has less fiends: %d\n", contentLineLength)
+					log.Printf("ADR data has less fields: %d\n", contentLineLength)
 				}
 			} else {
 				log.Printf("Error: ADR data has no field\n")
